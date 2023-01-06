@@ -1,10 +1,15 @@
 package com.caroli.cykel;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
@@ -58,5 +63,39 @@ public class MainController {
         Stage stage = (Stage) myMenuBar.getScene().getWindow();
         // do what you have to do
         stage.close();
+    }
+    @FXML
+    private void aboutButtonAction(ActionEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("about.fxml"));
+            Parent root1 = (Parent) fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.setTitle("About");
+            Image image = new Image(CaroliKassaApp.class.getResourceAsStream("icons/ic_launcher-web.png"));
+            stage.getIcons().add(image);
+            stage.setScene(new Scene(root1));
+            stage.setResizable(false);
+            stage.show();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void settingsButtonAction(ActionEvent actionEvent) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("settings-view.fxml"));
+            Parent root1 = (Parent) fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Settings");
+            Image image = new Image(CaroliKassaApp.class.getResourceAsStream("icons/ic_launcher-web.png"));
+            stage.getIcons().add(image);
+            stage.setScene(new Scene(root1));
+            stage.setResizable(false);
+            stage.setMaximized(false);
+            stage.show();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 }

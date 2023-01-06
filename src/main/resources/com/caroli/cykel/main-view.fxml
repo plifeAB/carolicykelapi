@@ -27,7 +27,7 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Help">
             <items>
-              <MenuItem mnemonicParsing="false" text="About" />
+              <MenuItem fx:id="aboutButtonMenu" onAction="#aboutButtonAction" mnemonicParsing="false" text="About" />
             </items>
           </Menu>
         </menus>
@@ -90,7 +90,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Button mnemonicParsing="false" prefHeight="45.0" prefWidth="1500.0" styleClass="settingsButton" text="Settings">
+            <Button mnemonicParsing="false" prefHeight="45.0" prefWidth="1500.0" styleClass="settingsButton" onAction="#settingsButtonAction" text="Settings">
                <graphic>
                   <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
                      <image>
