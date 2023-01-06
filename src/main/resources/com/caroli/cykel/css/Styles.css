@@ -1,0 +1,22 @@
+.forcePushButton {
+    -fx-background-color:#03a9f4;
+    -fx-text-fill:black;
+}
+.forcePushButton:hover {
+    -fx-background-color:#b3e5fc;
+}
+.settingsButton {
+    -fx-background-color:#fbc02d;
+    -fx-cursor: hand;
+}
+.settingsButton:hover {
+    -fx-background-color:#fdd835;
+}
+
+.saveLogButton {
+    -fx-background-color:#ff5722;
+    -fx-cursor: hand;
+}
+.saveLogButton:hover {
+    -fx-background-color:#ff8a65;
+}
