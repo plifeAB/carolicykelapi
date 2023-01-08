@@ -22,12 +22,12 @@
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
-              <MenuItem fx:id="closeButtonMenu" mnemonicParsing="false" onAction="#closeButtonAction" text="Close"/>
+              <MenuItem fx:id="closeButtonMenu" mnemonicParsing="false" onAction="#closeButtonAction" text="Close" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">
             <items>
-              <MenuItem fx:id="aboutButtonMenu" onAction="#aboutButtonAction" mnemonicParsing="false" text="About" />
+              <MenuItem fx:id="aboutButtonMenu" mnemonicParsing="false" onAction="#aboutButtonAction" text="About" />
             </items>
           </Menu>
         </menus>
@@ -90,7 +90,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Button mnemonicParsing="false" prefHeight="45.0" prefWidth="1500.0" styleClass="settingsButton" onAction="#settingsButtonAction" text="Settings">
+            <Button mnemonicParsing="false" onAction="#settingsButtonAction" prefHeight="45.0" prefWidth="1500.0" styleClass="settingsButton" text="Settings">
                <graphic>
                   <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -102,7 +102,7 @@
                   <Insets bottom="5.0" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" prefHeight="45.0" prefWidth="1500.0" styleClass="saveLogButton" text="Save Log">
+            <Button fx:id="saveLogButton" mnemonicParsing="false" onAction="#saveLogButtonAction" prefHeight="45.0" prefWidth="1500.0" styleClass="saveLogButton" text="Save Log">
                <HBox.margin>
                   <Insets bottom="5.0" left="5.0" right="4.0" />
                </HBox.margin>

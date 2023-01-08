@@ -1,0 +1,14 @@
+.settingsSaveButton {
+    -fx-background-color:#3F51B5;
+    -fx-text-fill:white;
+}
+.settingsSaveButton:hover {
+     -fx-background-color:#42A5F5;
+}
+.settingsDiscardButton {
+    -fx-background-color:#DD2C00;
+    -fx-text-fill:white;
+}
+.settingsDiscardButton:hover {
+    -fx-background-color:#FF3D00;
+}

@@ -5,6 +5,7 @@ module com.caroli.carolicykel {
     requires org.kordamp.bootstrapfx.core;
     requires org.json;
     requires json.simple;
+    requires com.google.gson;
 
 
     opens com.caroli.cykel to javafx.fxml;

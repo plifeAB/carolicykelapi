@@ -5,7 +5,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
@@ -16,7 +15,12 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
+import java.nio.file.StandardOpenOption;
 
 public class MainController {
     @FXML
@@ -79,7 +83,6 @@ public class MainController {
         } catch(Exception e) {
             e.printStackTrace();
         }
-
     }
 
     public void settingsButtonAction(ActionEvent actionEvent) {
@@ -93,9 +96,30 @@ public class MainController {
             stage.setScene(new Scene(root1));
             stage.setResizable(false);
             stage.setMaximized(false);
+            stage.setOnShowing( event -> {System.out.println("stage showed");} );
             stage.show();
+
         } catch(Exception e) {
             e.printStackTrace();
         }
+    }
+    public void saveLogButtonAction(ActionEvent actionEvent) {
+        // Creating an instance of file
+        Path path = Paths.get("log.txt");
+        String str = getStringFromTextFlow(logBox);
+        try {
+            Files.writeString(path, str, StandardOpenOption.APPEND);
+            logBox.getChildren().clear();
+        }
+        catch (IOException ex) {
+            System.out.print("Invalid Path");
+        }
+    }
+    public static String getStringFromTextFlow(TextFlow tf) {
+        StringBuilder sb = new StringBuilder();
+        tf.getChildren().stream()
+                .filter(t -> Text.class.equals(t.getClass()))
+                .forEach(t -> sb.append(((Text) t).getText()));
+        return sb.toString();
     }
 }

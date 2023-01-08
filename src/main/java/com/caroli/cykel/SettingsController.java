@@ -1,54 +1,33 @@
 package com.caroli.cykel;
 
+import com.google.gson.*;
 import javafx.event.ActionEvent;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.text.ParseException;
+
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
+import javafx.stage.Stage;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.json.JSONTokener;
 
-
-import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 
 public class SettingsController {
+    @FXML
+    ToggleGroup mode; //I called it mode in SceneBuilder.
+    @FXML
+    TextField warehausename;
+    @FXML
+    TextField storekey;
+
     public void writeJsonAction(ActionEvent actionEvent) throws IOException {
-/*
-        JSONObject tomJsonObj = new JSONObject();
-        tomJsonObj.put("name", "Tom");
-        tomJsonObj.put("birthday", "1940-02-10");
-        tomJsonObj.put("age", 76);
-        tomJsonObj.put("married", false);
 
-        // Cannot set null directly
-        tomJsonObj.put("car", JSONObject.NULL);
-
-        tomJsonObj.put("favorite_foods", new String[] { "cookie", "fish", "chips" });
-
-        // {"id": 100001, "nationality", "American"}
-        JSONObject passportJsonObj = new JSONObject();
-        passportJsonObj.put("id", 100001);
-        passportJsonObj.put("nationality", "American");
-        // Value of a key is a JSONObject
-        tomJsonObj.put("passport", passportJsonObj);
-        System.out.println(tomJsonObj.toString());
-
-
-
-        //Write JSON file
-        try (FileWriter file = new FileWriter("employees.json")) {
-            //We can write any JSONArray or JSONObject instance to the file
-            file.write(tomJsonObj.toString());
-            file.flush();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-*/
         //First Employee
         JSONObject employeeDetails = new JSONObject();
         employeeDetails.put("firstName", "Lokesh");
@@ -84,47 +63,54 @@ public class SettingsController {
     }
 
     @SuppressWarnings("unchecked")
-    public void readJsonAction(ActionEvent actionEvent) throws FileNotFoundException {
-        //JSON parser object to parse read file
-        JSONParser jsonParser = new JSONParser();
+    public void readJsonAction(ActionEvent actionEvent) throws IOException, ParseException {
 
-        try (FileReader reader = new FileReader("employees.json"))
-        {
-            //Read JSON file
-            Object obj = jsonParser.parse(reader);
+        JsonParser parser = new JsonParser();
+        JsonArray jsonArray = (JsonArray) parser.parse(new FileReader("employees.json"));
 
-            JSONArray employeeList = (JSONArray) obj;
-            System.out.println(employeeList);
+        for (int i = 0; i < jsonArray.size(); i++) {
+            JsonObject item = (JsonObject) jsonArray.get(i);
+            JsonObject emp = (JsonObject) item.get("employee");
+            System.out.println(emp.get("firstName"));
+        }
+    }
 
-            //Iterate over employee array
-            employeeList.forEach( emp -> parseEmployeeObject( (JSONObject) emp ) );
+    public void saveSettingsAction(ActionEvent actionEvent) {
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        RadioButton selectedRadioButton = (RadioButton) mode.getSelectedToggle();
+        String toogleGroupValue = selectedRadioButton.getText();
+
+        String wareHauseName = warehausename.getText();
+        String storeKey = storekey.getText();
+
+        //First Employee
+        JSONObject settingDetails = new JSONObject();
+        settingDetails.put("warehousename", wareHauseName);
+        settingDetails.put("storekey", storeKey);
+        settingDetails.put("mode", toogleGroupValue);
+        JSONObject settingObject = new JSONObject();
+        settingObject.put("settings", settingDetails);
+        //Add employees to list
+        JSONArray settingList = new JSONArray();
+        settingList.put(settingObject);
+        //Write JSON file
+        try (FileWriter file = new FileWriter("settings.json")) {
+            //We can write any JSONArray or JSONObject instance to the file
+            file.write(settingList.toString());
+            file.flush();
+            handleCloseButtonAction(actionEvent);
+
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (org.json.simple.parser.ParseException e) {
-            e.printStackTrace();
         }
-
     }
 
-    private static void parseEmployeeObject(JSONObject employee)
-    {
-
-        //Get employee object within list
-        JSONObject employeeObject = (JSONObject) employee.get("employee");
-
-        //Get employee first name
-        String firstName = (String) employeeObject.get("firstName");
-        System.out.println(firstName);
-
-        //Get employee last name
-        String lastName = (String) employeeObject.get("lastName");
-        System.out.println(lastName);
-
-        //Get employee website name
-        String website = (String) employeeObject.get("website");
-        System.out.println(website);
+    public void settingsDiscardAction(ActionEvent actionEvent) {
+        handleCloseButtonAction(actionEvent);
     }
+    @FXML
+    public void handleCloseButtonAction(ActionEvent event) {
+        ((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
+    }
+
 }
