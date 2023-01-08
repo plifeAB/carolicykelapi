@@ -38,7 +38,7 @@ public class ReadSettings {
         } catch(Exception e) {
             // create text
             Text text_1 = new Text(e.toString());
-            logBox.getChildren().add(text_1);
+            //logBox.getChildren().add(text_1);
         }
 
     }

@@ -67,7 +67,7 @@
                   <Label text="Sync Mode" GridPane.rowIndex="2" />
                   <VBox alignment="CENTER_LEFT" prefHeight="41.0" prefWidth="178.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <children>
-                        <RadioButton fx:id="radioAuto" mnemonicParsing="false" text="Auto" textAlignment="RIGHT">
+                        <RadioButton fx:id="radioAuto" mnemonicParsing="false" selected="true" text="Auto" textAlignment="RIGHT">
                            <VBox.margin>
                               <Insets bottom="5.0" />
                            </VBox.margin>

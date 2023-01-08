@@ -39,15 +39,21 @@ public class SettingsController {
 
         ReadSettings settings = new ReadSettings();
         settings.ReadSettings();
-        warehousename.setText(settings.getWareHouseName());
-        storekey.setText(settings.getStoreKey());
-        reqUrl.setText(settings.getRequestUrl());
-        requestLimit.setText(settings.getRequestLimit());
-        String mode = settings.getMode();
-        if(mode.equals("Manuel")) {
-            radioManuel.setSelected(true);
-        } else {
-            radioAuto.setSelected(true);
+        try {
+            warehousename.setText(settings.getWareHouseName());
+            storekey.setText(settings.getStoreKey());
+            reqUrl.setText(settings.getRequestUrl());
+            requestLimit.setText(settings.getRequestLimit());
+            String mode = settings.getMode();
+            if (mode.equals("Manuel")) {
+                radioManuel.setSelected(true);
+            } else {
+                radioAuto.setSelected(true);
+            }
+        } catch (NullPointerException e ) {
+            return;
+        } catch (Exception e ) {
+            e.printStackTrace();
         }
 
     }
