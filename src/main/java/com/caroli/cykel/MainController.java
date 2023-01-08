@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
@@ -15,6 +16,8 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
+
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -31,6 +34,24 @@ public class MainController {
     private MenuItem closeButtonMenu;
     @FXML
     MenuBar myMenuBar;
+
+    @FXML
+    Label modeStatus;
+    @FXML
+    Label wareHouseStatus;
+    @FXML
+    Label lastRequestStatus;
+
+    @FXML
+    public void initialize() throws FileNotFoundException {
+        ReadSettings settings = new ReadSettings();
+        settings.ReadSettings();
+        wareHouseStatus.setText(settings.getWareHouseName());
+        String mode = settings.getMode();
+        modeStatus.setText(mode);
+
+    }
+
     @FXML
     protected void onPushButtonClick()
     {
@@ -96,7 +117,13 @@ public class MainController {
             stage.setScene(new Scene(root1));
             stage.setResizable(false);
             stage.setMaximized(false);
-            stage.setOnShowing( event -> {System.out.println("stage showed");} );
+            /*
+            init function calling dynamically but this method able to use for calling another function
+
+            SettingsController controller = fxmlLoader.getController();
+            stage.setOnShowing( event -> {controller.initialize();} );
+            */
+
             stage.show();
 
         } catch(Exception e) {
@@ -107,12 +134,17 @@ public class MainController {
         // Creating an instance of file
         Path path = Paths.get("log.txt");
         String str = getStringFromTextFlow(logBox);
+
         try {
             Files.writeString(path, str, StandardOpenOption.APPEND);
             logBox.getChildren().clear();
         }
         catch (IOException ex) {
             System.out.print("Invalid Path");
+            Text text_1 = new Text("Invalid Path\n");
+            text_1.setFill(Color.RED);
+            text_1.setFont(Font.font("Verdana", 15));
+            logBox.getChildren().add(text_1);
         }
     }
     public static String getStringFromTextFlow(TextFlow tf) {

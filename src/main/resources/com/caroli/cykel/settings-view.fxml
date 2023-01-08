@@ -15,14 +15,6 @@
 <?import javafx.scene.layout.VBox?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="304.0" prefWidth="422.0" stylesheets="@css/Settings.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.caroli.cykel.SettingsController">
-   <left>
-      <VBox prefHeight="263.0" prefWidth="65.0" BorderPane.alignment="CENTER">
-         <children>
-            <Button fx:id="writeButton" alignment="CENTER" mnemonicParsing="false" onAction="#writeJsonAction" prefHeight="500.0" prefWidth="500.0" text="write json" />
-            <Button fx:id="readJsonButton" alignment="CENTER" mnemonicParsing="false" onAction="#readJsonAction" prefHeight="500.0" prefWidth="500.0" text="Button" />
-         </children>
-      </VBox>
-   </left>
    <bottom>
       <AnchorPane prefHeight="41.0" prefWidth="422.0" BorderPane.alignment="CENTER">
          <children>
@@ -57,24 +49,25 @@
          <children>
             <GridPane prefHeight="263.0" prefWidth="302.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
               <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="171.0" minWidth="10.0" prefWidth="120.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="232.0" minWidth="10.0" prefWidth="232.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="171.0" minWidth="10.0" prefWidth="150.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="253.0" minWidth="10.0" prefWidth="253.0" />
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
                   <Label text="Warehouse Name" />
-                  <TextField fx:id="warehausename" GridPane.columnIndex="1" />
+                  <TextField fx:id="warehousename" maxWidth="240.0" GridPane.columnIndex="1" />
                   <Label text="Store Key" GridPane.rowIndex="1" />
-                  <TextField fx:id="storekey" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <TextField fx:id="storekey" maxWidth="240.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <Label text="Sync Mode" GridPane.rowIndex="2" />
                   <VBox alignment="CENTER_LEFT" prefHeight="41.0" prefWidth="178.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <children>
-                        <RadioButton mnemonicParsing="false" selected="true" text="Auto" textAlignment="RIGHT">
+                        <RadioButton fx:id="radioAuto" mnemonicParsing="false" text="Auto" textAlignment="RIGHT">
                            <VBox.margin>
                               <Insets bottom="5.0" />
                            </VBox.margin>
@@ -82,9 +75,13 @@
                               <ToggleGroup fx:id="mode" />
                            </toggleGroup>
                         </RadioButton>
-                        <RadioButton mnemonicParsing="false" text="Manuel" toggleGroup="$mode" />
+                        <RadioButton fx:id="radioManuel" mnemonicParsing="false" text="Manuel" toggleGroup="$mode" />
                      </children>
                   </VBox>
+                  <Label text="Request URL" GridPane.rowIndex="3" />
+                  <TextField fx:id="reqUrl" maxWidth="240.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <TextField fx:id="requestLimit" maxWidth="240.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                  <Label text="Request Limit" GridPane.rowIndex="4" />
                </children>
                <opaqueInsets>
                   <Insets />
@@ -94,6 +91,9 @@
                </padding>
             </GridPane>
          </children>
+         <padding>
+            <Insets left="5.0" />
+         </padding>
       </AnchorPane>
    </center>
 </BorderPane>

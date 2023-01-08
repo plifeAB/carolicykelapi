@@ -22,9 +22,35 @@ public class SettingsController {
     @FXML
     ToggleGroup mode; //I called it mode in SceneBuilder.
     @FXML
-    TextField warehausename;
+    TextField warehousename;
     @FXML
     TextField storekey;
+    @FXML
+    TextField reqUrl;
+    @FXML
+    RadioButton radioAuto;
+    @FXML
+    RadioButton radioManuel;
+    @FXML
+    TextField requestLimit;
+
+    @FXML
+    public void initialize() throws FileNotFoundException {
+
+        ReadSettings settings = new ReadSettings();
+        settings.ReadSettings();
+        warehousename.setText(settings.getWareHouseName());
+        storekey.setText(settings.getStoreKey());
+        reqUrl.setText(settings.getRequestUrl());
+        requestLimit.setText(settings.getRequestLimit());
+        String mode = settings.getMode();
+        if(mode.equals("Manuel")) {
+            radioManuel.setSelected(true);
+        } else {
+            radioAuto.setSelected(true);
+        }
+
+    }
 
     public void writeJsonAction(ActionEvent actionEvent) throws IOException {
 
@@ -80,14 +106,19 @@ public class SettingsController {
         RadioButton selectedRadioButton = (RadioButton) mode.getSelectedToggle();
         String toogleGroupValue = selectedRadioButton.getText();
 
-        String wareHauseName = warehausename.getText();
+        String wareHauseName = warehousename.getText();
         String storeKey = storekey.getText();
+        String requestUrl  = reqUrl.getText();
+        String requestLim  = requestLimit.getText();
+
 
         //First Employee
         JSONObject settingDetails = new JSONObject();
         settingDetails.put("warehousename", wareHauseName);
         settingDetails.put("storekey", storeKey);
         settingDetails.put("mode", toogleGroupValue);
+        settingDetails.put("requesturl", requestUrl);
+        settingDetails.put("requestLimit",requestLim);
         JSONObject settingObject = new JSONObject();
         settingObject.put("settings", settingDetails);
         //Add employees to list
