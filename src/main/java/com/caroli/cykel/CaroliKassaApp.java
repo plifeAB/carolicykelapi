@@ -10,6 +10,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class CaroliKassaApp extends Application {
     @Override
@@ -24,6 +27,7 @@ public class CaroliKassaApp extends Application {
         stage.show();
 
         //repeating timer: prints stuff every 10s
+        /*
         Timer myRepeatingTimer = new Timer();
         myRepeatingTimer.scheduleAtFixedRate(new TimerTask(){
             @Override
@@ -31,11 +35,23 @@ public class CaroliKassaApp extends Application {
                 System.out.println("hello from repeating timer");
             }
         }, 0, 1000);
-
+        */
     }
 
 
     public static void main(String[] args) {
+
+        Runnable task = () -> {
+            System.out.println("Checking Server");
+            //Other multi-line code instructions
+        };
+        ScheduledExecutorService executorService = Executors.newScheduledThreadPool(2);
+        executorService.scheduleAtFixedRate(task, 1 ,1, TimeUnit.MINUTES);
+
         launch();
+
     }
+
+
+
 }
