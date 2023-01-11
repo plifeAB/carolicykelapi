@@ -18,6 +18,8 @@ public class ReadSettings {
     public String requestUrl;
     public String mode;
     public String requestLimit;
+    public String serverRequestUrl;
+    public Integer syncTimePeriod;
 
 
     public  void ReadSettings() throws FileNotFoundException {
@@ -28,11 +30,13 @@ public class ReadSettings {
             for (int i = 0; i < jsonArray.size(); i++) {
                 JsonObject item = (JsonObject) jsonArray.get(i);
                 JsonObject emp = (JsonObject) item.get("settings");
-                wareHouseName=emp.get("warehousename").toString().replaceAll("\"", "");
-                storeKey=emp.get("storekey").toString().replaceAll("\"", "");
-                requestUrl = emp.get("requesturl").toString().replaceAll("\"", "");
+                wareHouseName=emp.get("wareHouseName").toString().replaceAll("\"", "");
+                storeKey=emp.get("storeKey").toString().replaceAll("\"", "");
+                requestUrl = emp.get("requestUrl").toString().replaceAll("\"", "");
                 mode = emp.get("mode").toString().replaceAll("\"", "");
                 requestLimit = emp.get("requestLimit").toString().replaceAll("\"", "");
+                serverRequestUrl = emp.get("serverRequestUrl").toString().replaceAll("\"", "");
+                syncTimePeriod = emp.get("syncTimePeriod").getAsInt();
 
             }
         } catch(Exception e) {
@@ -59,5 +63,11 @@ public class ReadSettings {
     }
     public String getRequestLimit() {
         return requestLimit;
+    }
+    public String getServerRequestUrl() {
+        return serverRequestUrl;
+    }
+    public Integer getSyncTimePeriod() {
+        return  syncTimePeriod;
     }
 }

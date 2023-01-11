@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
@@ -58,6 +61,8 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
                   <Label text="Warehouse Name" />
@@ -78,10 +83,32 @@
                         <RadioButton fx:id="radioManuel" mnemonicParsing="false" text="Manuel" toggleGroup="$mode" />
                      </children>
                   </VBox>
-                  <Label text="Request URL" GridPane.rowIndex="3" />
+                  <Label text="API Request Url" GridPane.rowIndex="3" />
                   <TextField fx:id="reqUrl" maxWidth="240.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                   <TextField fx:id="requestLimit" maxWidth="240.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                   <Label text="Request Limit" GridPane.rowIndex="4" />
+                  <Label text="Server Request Url" GridPane.rowIndex="5" />
+                  <TextField fx:id="serverReqUrl" maxWidth="240.0" prefWidth="240.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                  <Label text="Sync Time Period " GridPane.rowIndex="6" />
+                  <HBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                     <children>
+      
+                               <ComboBox fx:id="timePeriod" prefWidth="150.0" promptText="Every">
+                             <items>
+                                 <FXCollections fx:factory="observableArrayList">
+                                     <String fx:value="6" />
+                                     <String fx:value="15" />
+                                     <String fx:value="24" />
+                                 </FXCollections>
+                             </items>
+                         </ComboBox>
+                        <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" text="Hours" textAlignment="RIGHT">
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin>
+                        </Label>
+                     </children>
+                  </HBox>
                </children>
                <opaqueInsets>
                   <Insets />

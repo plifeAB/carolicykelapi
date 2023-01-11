@@ -6,10 +6,7 @@ import javafx.event.ActionEvent;
 import java.io.*;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import org.json.JSONArray;
@@ -33,6 +30,10 @@ public class SettingsController {
     RadioButton radioManuel;
     @FXML
     TextField requestLimit;
+    @FXML
+    ComboBox timePeriod;
+    @FXML
+    TextField serverReqUrl;
 
     @FXML
     public void initialize() throws FileNotFoundException {
@@ -44,12 +45,14 @@ public class SettingsController {
             storekey.setText(settings.getStoreKey());
             reqUrl.setText(settings.getRequestUrl());
             requestLimit.setText(settings.getRequestLimit());
+            serverReqUrl.setText(settings.getServerRequestUrl());
             String mode = settings.getMode();
             if (mode.equals("Manuel")) {
                 radioManuel.setSelected(true);
             } else {
                 radioAuto.setSelected(true);
             }
+            timePeriod.getSelectionModel().select(settings.getSyncTimePeriod().toString());
         } catch (NullPointerException e ) {
             return;
         } catch (Exception e ) {
@@ -109,37 +112,50 @@ public class SettingsController {
 
     public void saveSettingsAction(ActionEvent actionEvent) {
 
-        RadioButton selectedRadioButton = (RadioButton) mode.getSelectedToggle();
-        String toogleGroupValue = selectedRadioButton.getText();
+        try {
+            RadioButton selectedRadioButton = (RadioButton) mode.getSelectedToggle();
+            String toogleGroupValue = selectedRadioButton.getText();
+            String wareHouseName = warehousename.getText();
+            String storeKey = storekey.getText();
+            String requestUrl = reqUrl.getText();
+            String requestLim = requestLimit.getText();
+            String serverRequestUrl = serverReqUrl.getText();
+            Integer syncTimePeriod = Integer.parseInt((String) timePeriod.getValue());
+            //Settings
+            JSONObject settingDetails = new JSONObject();
+            settingDetails.put("wareHouseName", wareHouseName);
+            settingDetails.put("storeKey", storeKey);
+            settingDetails.put("mode", toogleGroupValue);
+            settingDetails.put("requestUrl", requestUrl);
+            settingDetails.put("requestLimit",requestLim);
+            settingDetails.put("serverRequestUrl",serverRequestUrl);
+            settingDetails.put("syncTimePeriod",syncTimePeriod);
+            JSONObject settingObject = new JSONObject();
+            settingObject.put("settings", settingDetails);
+            //Add employees to list
+            JSONArray settingList = new JSONArray();
+            settingList.put(settingObject);
+            //Write JSON file
+            try (FileWriter file = new FileWriter("settings.json")) {
+                //We can write any JSONArray or JSONObject instance to the file
+                file.write(settingList.toString());
+                file.flush();
+                handleCloseButtonAction(actionEvent);
 
-        String wareHauseName = warehousename.getText();
-        String storeKey = storekey.getText();
-        String requestUrl  = reqUrl.getText();
-        String requestLim  = requestLimit.getText();
-
-
-        //First Employee
-        JSONObject settingDetails = new JSONObject();
-        settingDetails.put("warehousename", wareHauseName);
-        settingDetails.put("storekey", storeKey);
-        settingDetails.put("mode", toogleGroupValue);
-        settingDetails.put("requesturl", requestUrl);
-        settingDetails.put("requestLimit",requestLim);
-        JSONObject settingObject = new JSONObject();
-        settingObject.put("settings", settingDetails);
-        //Add employees to list
-        JSONArray settingList = new JSONArray();
-        settingList.put(settingObject);
-        //Write JSON file
-        try (FileWriter file = new FileWriter("settings.json")) {
-            //We can write any JSONArray or JSONObject instance to the file
-            file.write(settingList.toString());
-            file.flush();
-            handleCloseButtonAction(actionEvent);
-
-        } catch (IOException e) {
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } catch (NumberFormatException e) {
+            Alert a = new Alert(Alert.AlertType.NONE,"default Dialog",ButtonType.OK);
+            // set content text
+            a.setContentText("Please choose Sync Time Period ");
+            // show the dialog
+            a.show();
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
+
     }
 
     public void settingsDiscardAction(ActionEvent actionEvent) {

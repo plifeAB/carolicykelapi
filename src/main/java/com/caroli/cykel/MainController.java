@@ -42,6 +42,7 @@ public class MainController {
     @FXML
     Label lastRequestStatus;
 
+    private Stage stageSettings;
     @FXML
     public void initialize() throws FileNotFoundException {
         ReadSettings settings = new ReadSettings();
@@ -110,13 +111,14 @@ public class MainController {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("settings-view.fxml"));
             Parent root1 = (Parent) fxmlLoader.load();
-            Stage stage = new Stage();
-            stage.setTitle("Settings");
-            Image image = new Image(CaroliKassaApp.class.getResourceAsStream("icons/ic_launcher-web.png"));
-            stage.getIcons().add(image);
-            stage.setScene(new Scene(root1));
-            stage.setResizable(false);
-            stage.setMaximized(false);
+            if( stageSettings == null) {
+                stageSettings = new Stage();
+                stageSettings.setTitle("Settings");
+                Image image = new Image(CaroliKassaApp.class.getResourceAsStream("icons/ic_launcher-web.png"));
+                stageSettings.getIcons().add(image);
+                stageSettings.setScene(new Scene(root1));
+                stageSettings.setResizable(false);
+                stageSettings.setMaximized(false);
             /*
             init function calling dynamically but this method able to use for calling another function
 
@@ -124,7 +126,12 @@ public class MainController {
             stage.setOnShowing( event -> {controller.initialize();} );
             */
 
-            stage.show();
+                stageSettings.show();
+            } else if(stageSettings.isShowing()) {
+                stageSettings.toFront();
+            } else {
+                stageSettings.show();
+            }
 
         } catch(Exception e) {
             e.printStackTrace();
