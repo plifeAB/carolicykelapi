@@ -4,25 +4,28 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class ReadSettings {
+public class ReadSettings  {
     @FXML
     public  TextFlow logBox;
-    public String wareHouseName;
-    public String storeKey;
-    public String requestUrl;
-    public String mode;
-    public String requestLimit;
-    public String serverRequestUrl;
-    public Integer syncTimePeriod;
+    public  String wareHouseName;
+    public  String storeKey;
+    public  String requestUrl;
+    public  String mode;
+    public  String requestLimit;
+    public  String serverRequestUrl;
+    public  Integer syncTimePeriod;
 
 
-    public  void ReadSettings() throws FileNotFoundException {
+    public  void ReadSettings()   throws FileNotFoundException {
 
         try {
             JsonParser parser = new JsonParser();
@@ -70,4 +73,6 @@ public class ReadSettings {
     public Integer getSyncTimePeriod() {
         return  syncTimePeriod;
     }
+
+
 }

@@ -37,22 +37,22 @@ public class SettingsController {
 
     @FXML
     public void initialize() throws FileNotFoundException {
-
-        ReadSettings settings = new ReadSettings();
-        settings.ReadSettings();
+        MainController.settings.ReadSettings();
+        //ReadSettings settings = new ReadSettings();
+        //settings.ReadSettings();
         try {
-            warehousename.setText(settings.getWareHouseName());
-            storekey.setText(settings.getStoreKey());
-            reqUrl.setText(settings.getRequestUrl());
-            requestLimit.setText(settings.getRequestLimit());
-            serverReqUrl.setText(settings.getServerRequestUrl());
-            String mode = settings.getMode();
+            warehousename.setText(MainController.settings.getWareHouseName());
+            storekey.setText(MainController.settings.getStoreKey());
+            reqUrl.setText(MainController.settings.getRequestUrl());
+            requestLimit.setText(MainController.settings.getRequestLimit());
+            serverReqUrl.setText(MainController.settings.getServerRequestUrl());
+            String mode = MainController.settings.getMode();
             if (mode.equals("Manuel")) {
                 radioManuel.setSelected(true);
             } else {
                 radioAuto.setSelected(true);
             }
-            timePeriod.getSelectionModel().select(settings.getSyncTimePeriod().toString());
+            timePeriod.getSelectionModel().select(MainController.settings.getSyncTimePeriod().toString());
         } catch (NullPointerException e ) {
             return;
         } catch (Exception e ) {

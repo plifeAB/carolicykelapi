@@ -43,9 +43,10 @@ public class MainController {
     Label lastRequestStatus;
 
     private Stage stageSettings;
+    public static ReadSettings settings;
     @FXML
     public void initialize() throws FileNotFoundException {
-        ReadSettings settings = new ReadSettings();
+        settings = new ReadSettings();
         settings.ReadSettings();
         wareHouseStatus.setText(settings.getWareHouseName());
         String mode = settings.getMode();
