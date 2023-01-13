@@ -11,6 +11,7 @@ import javafx.scene.text.TextFlow;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class ReadSettings  {
@@ -26,7 +27,6 @@ public class ReadSettings  {
 
 
     public  void ReadSettings()   throws FileNotFoundException {
-
         try {
             JsonParser parser = new JsonParser();
             JsonArray jsonArray = (JsonArray) parser.parse(new FileReader("settings.json"));
