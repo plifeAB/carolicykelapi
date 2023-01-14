@@ -13,7 +13,7 @@ import java.io.FileReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-
+import com.caroli.cykel.Request;
 public class ReadSettings  {
     @FXML
     public  TextFlow logBox;
@@ -38,6 +38,7 @@ public class ReadSettings  {
             });
 
              */
+
             JsonParser parser = new JsonParser();
             JsonArray jsonArray = (JsonArray) parser.parse(new FileReader("settings.json"));
             for (int i = 0; i < jsonArray.size(); i++) {
@@ -54,8 +55,9 @@ public class ReadSettings  {
             }
         } catch(Exception e) {
             // create text
-            Text text_1 = new Text(e.toString());
+            //Text text_1 = new Text(e.toString());
             //logBox.getChildren().add(text_1);
+            System.out.println(e.toString());
         }
 
     }
