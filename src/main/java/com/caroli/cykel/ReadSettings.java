@@ -28,6 +28,16 @@ public class ReadSettings  {
 
     public  void ReadSettings()   throws FileNotFoundException {
         try {
+            /*
+            ArrayList<Item> list = new ArrayList<Item>();
+            list.add(new Item("test 3 ","test desc 3 ",3));
+            list.add(new Item("test 4 ","test desc 4",4));
+            list.add(new Item("test 5 ","test desc 5",5));
+            list.forEach((n) -> {
+                System.out.println(n.getDescription());
+            });
+
+             */
             JsonParser parser = new JsonParser();
             JsonArray jsonArray = (JsonArray) parser.parse(new FileReader("settings.json"));
             for (int i = 0; i < jsonArray.size(); i++) {
