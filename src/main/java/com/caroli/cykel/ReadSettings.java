@@ -4,16 +4,10 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
-
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.ResourceBundle;
-import com.caroli.cykel.Request;
+
 public class ReadSettings  {
     @FXML
     public  TextFlow logBox;
@@ -44,19 +38,16 @@ public class ReadSettings  {
             for (int i = 0; i < jsonArray.size(); i++) {
                 JsonObject item = (JsonObject) jsonArray.get(i);
                 JsonObject emp = (JsonObject) item.get("settings");
-                wareHouseName=emp.get("wareHouseName").toString().replaceAll("\"", "");
-                storeKey=emp.get("storeKey").toString().replaceAll("\"", "");
-                requestUrl = emp.get("requestUrl").toString().replaceAll("\"", "");
-                mode = emp.get("mode").toString().replaceAll("\"", "");
-                requestLimit = emp.get("requestLimit").toString().replaceAll("\"", "");
-                serverRequestUrl = emp.get("serverRequestUrl").toString().replaceAll("\"", "");
+                wareHouseName=emp.get("wareHouseName").getAsString();
+                storeKey=emp.get("storeKey").getAsString();
+                requestUrl = emp.get("requestUrl").getAsString();
+                mode = emp.get("mode").getAsString();
+                requestLimit = emp.get("requestLimit").getAsString();
+                serverRequestUrl = emp.get("serverRequestUrl").getAsString();
                 syncTimePeriod = emp.get("syncTimePeriod").getAsInt();
 
             }
         } catch(Exception e) {
-            // create text
-            //Text text_1 = new Text(e.toString());
-            //logBox.getChildren().add(text_1);
             System.out.println(e.toString());
         }
 
@@ -85,6 +76,5 @@ public class ReadSettings  {
     public Integer getSyncTimePeriod() {
         return  syncTimePeriod;
     }
-
 
 }

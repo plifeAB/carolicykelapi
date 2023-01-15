@@ -9,22 +9,12 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
-import org.json.JSONObject;
-
 import java.io.IOException;
-
 
 public class Request {
     public JsonArray req() throws IOException {
-        /*
-        URL url = new URL("https://www.example.com/login");
-        URLConnection con = url.openConnection();
-        HttpURLConnection http = (HttpURLConnection)con;
-        http.setRequestMethod("GET"); // PUT is another valid option
-        http.setDoOutput(true);
-         */
-        CloseableHttpClient httpClient = HttpClients.createDefault();
 
+        CloseableHttpClient httpClient = HttpClients.createDefault();
 
         try {
             ReadSettings settings = new ReadSettings();
@@ -50,8 +40,6 @@ public class Request {
                     // return it as a String
                     String result = EntityUtils.toString(entity);
                     //System.out.println(result);
-
-
                     JsonParser parser = new JsonParser();
                     JsonArray jsonArray = (JsonArray) parser.parse(result);
                     return jsonArray;

@@ -132,7 +132,7 @@ public class SettingsController {
             settingDetails.put("syncTimePeriod",syncTimePeriod);
             JSONObject settingObject = new JSONObject();
             settingObject.put("settings", settingDetails);
-            //Add employees to list
+
             JSONArray settingList = new JSONArray();
             settingList.put(settingObject);
             //Write JSON file

@@ -1,20 +1,16 @@
 package com.caroli.cykel;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
@@ -78,14 +74,18 @@ public class MainController {
         logBox.getChildren().add(text_2);
 
          */
-        Request request  = new Request();
-        JsonArray response =request.req();
-        response.forEach((it) -> {
-            JsonObject item = (JsonObject) it;
-            JsonObject department = (JsonObject) item.get("Department");
-            //System.out.println(department.get("Description"));
-            System.out.println(item.get("Description"));
-        });
+        /*
+            Request request = new Request();
+            JsonArray response = request.req();
+            response.forEach((it) -> {
+                JsonObject item = (JsonObject) it;
+                JsonObject department = (JsonObject) item.get("Department");
+                //System.out.println(department.get("Description"));
+                //System.out.println(item.get("Description").getAsString());
+            });
+
+         */
+
     }
     @FXML
     private void closeButtonAction(){
