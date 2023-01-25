@@ -5,21 +5,60 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class Item implements Initializable {
-    private String name;
-    private String description;
+    private String title;
+    private String barcode;
+    private String itemNumber;
+    private Integer itemId;
     private Integer stock;
-    public Item(String name, String description, Integer stock) {
-        this.name=name;
-        this.description=description;
+    private Float sellPrice;
+    private Float buyPrice;
+    private String supplier;
+
+    public Item(String title,
+                String barcode,
+                String itemNumber,
+                Integer itemId,
+                Integer stock,
+                Float sellPrice,
+                Float buyPrice,
+                String supplier) {
+
+        this.title=title;
+        this.barcode=barcode;
+        this.itemNumber = itemNumber;
+        this.itemId = itemId;
         this.stock=stock;
+        this.sellPrice = sellPrice;
+        this.buyPrice = buyPrice;
+        this.supplier = supplier;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public String getDescription() {
-        return description;
+    public String getBarcode() {
+        return barcode;
+    }
+
+    public String getItemNumber() {
+        return itemNumber;
+    }
+
+    public Integer getItemId() {
+        return itemId;
+    }
+
+    public Float getSellPrice() {
+        return sellPrice;
+    }
+
+    public Float getBuyPrice() {
+        return buyPrice;
+    }
+
+    public String getSupplier() {
+        return supplier;
     }
 
     public Integer getStock() {
