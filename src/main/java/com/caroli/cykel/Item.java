@@ -23,16 +23,16 @@ public class Item implements Initializable {
                 Float buyPrice,
                 String supplier) {
 
-        this.title=title;
-        this.barcode=barcode;
+        this.title = title;
+        this.barcode = barcode;
         this.itemNumber = itemNumber;
         this.itemId = itemId;
-        this.stock=stock;
+        this.stock = stock;
         this.sellPrice = sellPrice;
         this.buyPrice = buyPrice;
         this.supplier = supplier;
-    }
 
+    }
     public String getTitle() {
         return title;
     }

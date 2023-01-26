@@ -43,7 +43,7 @@ public class CaroliKassaApp extends Application {
         };
         //ScheduledExecutorService executorService = Executors.newScheduledThreadPool(2);
         executorService = Executors.newScheduledThreadPool(2);
-        executorService.scheduleAtFixedRate(task, 1 ,1, TimeUnit.MINUTES);
+        executorService.scheduleAtFixedRate(task, 30 ,30, TimeUnit.SECONDS);
 
         launch();
 
@@ -82,6 +82,7 @@ public class CaroliKassaApp extends Application {
                     sch.cancel();
 
                     list.forEach((item -> {
+
                         System.out.println(item.getTitle());
                     }));
                 }
