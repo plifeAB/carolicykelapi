@@ -4,7 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import javafx.application.Application;
 import javafx.concurrent.WorkerStateEvent;
-import javafx.event.ActionEvent;
+
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -13,12 +13,17 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class CaroliKassaApp extends Application {
+    //For Api Request
     private static ScheduledExecutorService executorService;
+    //For store sync
+    private static ScheduledExecutorService executorSyncService;
+
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(CaroliKassaApp.class.getResource("main-view.fxml"));
@@ -81,10 +86,15 @@ public class CaroliKassaApp extends Application {
 
                     sch.cancel();
 
-                    list.forEach((item -> {
+                    /*
+                    //Sync Request
+                    Thread syncReq = new SyncRequest(list);
+                    //syncReq.setDaemon(true);
+                    syncReq.start();
+                    */
 
-                        System.out.println(item.getTitle());
-                    }));
+                    ExecutorService executor = Executors.newFixedThreadPool(3);
+                    executor.submit(new SyncRequest(list,executor));
                 }
             });
             sch.start();
