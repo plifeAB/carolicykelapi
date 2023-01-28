@@ -10,6 +10,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Request {
     public JsonArray req() throws IOException {
@@ -54,5 +55,13 @@ public class Request {
         }
 
         return null;
+    }
+    public void syncReq(ArrayList<Item> items)  {
+        System.out.println(items.size());
+        for(int i=0; i<items.size(); i++)
+        {
+            Item item = items.get(i);
+            System.out.println(item.getTitle());
+        }
     }
 }

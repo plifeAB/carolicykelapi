@@ -32,11 +32,9 @@ public class SyncRequest extends Thread implements Runnable {
         }
         try {
             syncThread = Thread.currentThread();
-            items.forEach((item -> {
-
-                System.out.println(item.getTitle());
-                cancel();
-            }));
+            Request request = new Request();
+            request.syncReq(items);
+            cancel();
         } catch (Exception e) {
             e.printStackTrace();
         }
