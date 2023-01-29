@@ -14,9 +14,11 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
+import org.apache.http.conn.HttpHostConnectException;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.UnknownHostException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -82,6 +84,18 @@ public class MainController {
                 text_1.setFont(Font.font("Verdana", 15));
                 logBox.getChildren().add(text_1);
             }
+        } catch(HttpHostConnectException e) {
+            Text text_1 = new Text("Connection Refused for api source\n");
+            text_1.setFill(Color.RED);
+            text_1.setFont(Font.font("Verdana", 13));
+            logBox.getChildren().add(text_1);
+            onProcess = false;
+        } catch (UnknownHostException e ) {
+            Text text_1 = new Text("Unknown host for api source\n");
+            text_1.setFill(Color.RED);
+            text_1.setFont(Font.font("Verdana", 13));
+            logBox.getChildren().add(text_1);
+            onProcess = false;
         } catch (Exception e) {
             e.printStackTrace();
             onProcess = false;
@@ -187,6 +201,11 @@ public class MainController {
         log_box.getChildren().add(time_text);
         scrollLogBoxPane.setVvalue(5D);
 
-
+    }
+    public static void update_log_box(String txt, Color cl) {
+        Text text_1 = new Text(txt);
+        text_1.setFill(cl);
+        text_1.setFont(Font.font("Verdana", 14));
+        log_box.getChildren().add(text_1);
     }
 }

@@ -55,19 +55,24 @@ public class CaroliKassaApp extends Application {
             String mode = settings.getMode();
             if (mode.equals("Auto") && ! MainController.onProcess) {
                 MainController.onProcess = true;
-                ScheduleddReq sch = new ScheduleddReq();
-                sch.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-                    @Override
-                    public void handle(WorkerStateEvent t) {
-                        ArrayList<Item> list = (ArrayList) t.getSource().getValue();
-                        ExecutorService executor = Executors.newFixedThreadPool(3);
-                        executor.submit(new SyncRequest(list, executor));
-                        MainController.update_time();
-                        sch.cancel();
-                    }
-                });
-                sch.start();
-            }else {
+                try {
+                    ScheduleddReq sch = new ScheduleddReq();
+                    sch.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+                        @Override
+                        public void handle(WorkerStateEvent t) {
+                            ArrayList<Item> list = (ArrayList) t.getSource().getValue();
+                            ExecutorService executor = Executors.newFixedThreadPool(3);
+                            executor.submit(new SyncRequest(list, executor));
+                            MainController.update_time();
+                            sch.cancel();
+                        }
+                    });
+                    sch.start();
+                } catch (Exception e) {
+                    MainController.onProcess = false;
+                }
+
+            } else {
                 System.out.println("onProcess or Manuel mode");
             }
         } catch (Exception e) {
