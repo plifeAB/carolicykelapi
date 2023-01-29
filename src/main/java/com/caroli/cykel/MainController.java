@@ -52,21 +52,27 @@ public class MainController {
         String mode = settings.getMode();
         modeStatus.setText(mode);
 
+
     }
 
     @FXML
-    protected void onPushButtonClick() throws IOException {
-        if( !onProcess ) {
-            onProcess = true;
-            ApiRequest request = new ApiRequest();
-            ArrayList<Item> items = request.apiReq();
-            ExecutorService executor = Executors.newFixedThreadPool(3);
-            executor.submit(new SyncRequest(items, executor));
-        } else {
-            Text text_1 = new Text("Last sync process still in queue\n");
-            text_1.setFill(Color.RED);
-            text_1.setFont(Font.font("Verdana", 15));
-            logBox.getChildren().add(text_1);
+    protected void onPushButtonClick()  {
+        try {
+            if (!onProcess) {
+                onProcess = true;
+                ApiRequest request = new ApiRequest();
+                ArrayList<Item> items = request.apiReq();
+                ExecutorService executor = Executors.newFixedThreadPool(3);
+                executor.submit(new SyncRequest(items, executor));
+            } else {
+                Text text_1 = new Text("Last sync process still in queue\n");
+                text_1.setFill(Color.RED);
+                text_1.setFont(Font.font("Verdana", 15));
+                logBox.getChildren().add(text_1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            onProcess = false;
         }
     }
 

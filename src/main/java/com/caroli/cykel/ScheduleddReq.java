@@ -11,10 +11,17 @@ public class ScheduleddReq extends Service<ArrayList> {
 
         return new Task<ArrayList>() {
             @Override
-            protected ArrayList<Item> call() throws Exception {
-                ApiRequest request = new ApiRequest();
-                ArrayList<Item> response = request.apiReq();
-                return response;
+            protected ArrayList<Item> call()  {
+                try {
+                    ApiRequest request = new ApiRequest();
+                    ArrayList<Item> response = request.apiReq();
+                    return response;
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    MainController.onProcess=false;
+                    return null;
+                }
             }
         };
     }

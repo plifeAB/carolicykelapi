@@ -1,6 +1,5 @@
 package com.caroli.cykel;
 
-
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -17,6 +16,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class ApiRequest {
     public ArrayList<Item> apiReq() throws IOException {
@@ -48,9 +48,9 @@ public class ApiRequest {
                     String result = EntityUtils.toString(entity);
                     JsonParser parser = new JsonParser();
                     JsonArray jsonArray = (JsonArray) parser.parse(result);
-
                     ArrayList<Item> list = new ArrayList();
                     jsonArray.forEach((n) -> {
+
                         JsonObject obj = (JsonObject) n;
                         String title = obj.get("Description").getAsString();
                         String barcode = obj.get("Barcode").getAsString();
@@ -69,6 +69,7 @@ public class ApiRequest {
 
                     });
                     return list;
+
                 }
 
             } finally {
@@ -101,52 +102,55 @@ public class ApiRequest {
             List<Item> item = items.subList(count + requestLimit, count + requestLimit + left);
             it.add(item);
             System.out.println(count);
-            it.forEach(n -> {
-                /*
-                n.forEach(t -> {
-                    //System.out.println(t.getTitle());
-                    System.out.println(t.getSellPrice());
-                });
 
-                 */
-                JSONArray json  = buildJson(n);
+            it.forEach(n -> {
+                JSONArray json = buildJson(n);
+                makeSyncRequest(json);
+
+                /*
+                AtomicReference<Integer> xx = new AtomicReference<>(0);
                 json.forEach(json_item -> {
                     try {
+                        xx.set(xx.get() +1);
+                        System.out.println(xx.get().toString());
                         makeSyncRequest((JSONObject) json_item);
                         Thread.sleep(100);
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }
                 });
+
+                 */
                 //System.out.println(buildJson(n));
             });
             MainController.onProcess = false;
-
         } catch (FileNotFoundException e) {
             System.out.println("could not read settings");
+            MainController.onProcess = false;
         }
 
     }
 
     public JSONArray buildJson(List<Item> items) {
         JSONArray allItems = new JSONArray();
-        items.forEach( it -> {
+        items.forEach(it -> {
             JSONObject item = new JSONObject();
-            item.put("title",it.getTitle());
-            item.put("barcode",it.getBarcode());
-            item.put("itemNumber",it.getItemNumber());
-            item.put("itemId",it.getItemId());
-            item.put("stock",it.getStock());
-            item.put("sellPrice",it.getSellPrice());
-            item.put("buyPrice",it.getBuyPrice());
-            item.put("supplier",it.getSupplier());
-            JSONObject allIt  = new JSONObject();
+            item.put("title", it.getTitle());
+            item.put("barcode", it.getBarcode());
+            item.put("itemNumber", it.getItemNumber());
+            item.put("itemId", it.getItemId());
+            item.put("stock", it.getStock());
+            item.put("sellPrice", it.getSellPrice());
+            item.put("buyPrice", it.getBuyPrice());
+            item.put("supplier", it.getSupplier());
+            JSONObject allIt = new JSONObject();
             allIt.put("Item", item);
             allItems.put(allIt);
         });
         return allItems;
     }
-    private boolean makeSyncRequest(JSONObject items) {
+
+    private boolean makeSyncRequest(JSONArray items) {
         System.out.println(items);
         return false;
     }
