@@ -62,6 +62,7 @@ public class CaroliKassaApp extends Application {
                         ArrayList<Item> list = (ArrayList) t.getSource().getValue();
                         ExecutorService executor = Executors.newFixedThreadPool(3);
                         executor.submit(new SyncRequest(list, executor));
+                        MainController.update_time();
                         sch.cancel();
                     }
                 });

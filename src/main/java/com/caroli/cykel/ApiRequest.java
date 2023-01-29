@@ -101,7 +101,7 @@ public class ApiRequest {
             }
             List<Item> item = items.subList(count + requestLimit, count + requestLimit + left);
             it.add(item);
-            System.out.println(count);
+            //System.out.println(count);
 
             it.forEach(n -> {
                 JSONArray json = buildJson(n);

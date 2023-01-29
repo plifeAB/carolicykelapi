@@ -1,6 +1,8 @@
 package com.caroli.cykel;
 
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -20,7 +22,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import java.nio.file.StandardOpenOption;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -44,6 +49,9 @@ public class MainController {
     public static ReadSettings settings;
     public static boolean onProcess = false;
 
+    public static TextFlow log_box;
+    public static Label lastRequestStatusLabel;
+    public static ScrollPane scrollLogBoxPane;
     @FXML
     public void initialize() throws FileNotFoundException {
         settings = new ReadSettings();
@@ -51,6 +59,9 @@ public class MainController {
         wareHouseStatus.setText(settings.getWareHouseName());
         String mode = settings.getMode();
         modeStatus.setText(mode);
+        log_box = logBox;
+        lastRequestStatusLabel = lastRequestStatus;
+        scrollLogBoxPane = scrollLogBox;
 
 
     }
@@ -64,6 +75,7 @@ public class MainController {
                 ArrayList<Item> items = request.apiReq();
                 ExecutorService executor = Executors.newFixedThreadPool(3);
                 executor.submit(new SyncRequest(items, executor));
+                update_time();
             } else {
                 Text text_1 = new Text("Last sync process still in queue\n");
                 text_1.setFill(Color.RED);
@@ -155,5 +167,26 @@ public class MainController {
                 .filter(t -> Text.class.equals(t.getClass()))
                 .forEach(t -> sb.append(((Text) t).getText()));
         return sb.toString();
+    }
+    public static void update_time()
+    {
+        Date date = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd yyyy HH:mm:ss", Locale.getDefault());
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+
+        String timeString = timeFormat.format(date);
+        String dateString = dateFormat.format(date);
+        lastRequestStatusLabel.setText(timeString);
+        Text text_1 = new Text("Request Process begin at\n");
+        text_1.setFill(Color.BLACK);
+        text_1.setFont(Font.font("Verdana", 14));
+        log_box.getChildren().add(text_1);
+        Text time_text= new Text(dateString + "\n");
+        time_text.setFill(Color.BLUE);
+        time_text.setFont(Font.font("Verdana", 12));
+        log_box.getChildren().add(time_text);
+        scrollLogBoxPane.setVvalue(5D);
+
+
     }
 }
