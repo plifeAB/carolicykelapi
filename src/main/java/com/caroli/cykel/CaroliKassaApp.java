@@ -1,7 +1,6 @@
 package com.caroli.cykel;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
+
 import javafx.application.Application;
 import javafx.concurrent.WorkerStateEvent;
 
@@ -21,8 +20,6 @@ import java.util.concurrent.TimeUnit;
 public class CaroliKassaApp extends Application {
     //For Api Request
     private static ScheduledExecutorService executorService;
-    //For store sync
-    private static ScheduledExecutorService executorSyncService;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -42,62 +39,36 @@ public class CaroliKassaApp extends Application {
     public static void main(String[] args) {
 
         Runnable task = () -> {
-            //System.out.println("Checking Server");
-            //Other multi-line code instructions
             scheduledRequest();
         };
         //ScheduledExecutorService executorService = Executors.newScheduledThreadPool(2);
         executorService = Executors.newScheduledThreadPool(2);
-        executorService.scheduleAtFixedRate(task, 30 ,30, TimeUnit.SECONDS);
-
+        executorService.scheduleAtFixedRate(task, 30, 30, TimeUnit.SECONDS);
         launch();
 
     }
 
     public static void scheduledRequest() {
         try {
-            ScheduleddReq sch = new ScheduleddReq();
-            sch.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-                @Override
-                public void handle(WorkerStateEvent t) {
-                    //System.out.println("done:" + t.getSource().getValue());
-                    ArrayList<Item> list = new ArrayList<Item>();
-                    JsonArray json = (JsonArray)t.getSource().getValue();
-
-                    json.forEach((n) -> {
-                        JsonObject obj = (JsonObject) n;
-                        String title = obj.get("Description").getAsString();
-                        String barcode = obj.get("Barcode").getAsString();
-                        String itemNumber = obj.get("ItemNumber").getAsString();
-                        Integer itemId = obj.get("Id").getAsInt();
-                        Integer stock = obj.get("StorageAmount").getAsInt();
-                        Float sellPrice = obj.get("SellPrice").getAsFloat();
-                        Float buyPrice = obj.get("BuyPrice").getAsFloat();
-
-                        JsonObject sup = (JsonObject) obj.get("Supplier").getAsJsonObject();
-                        String supplier = sup.get("Name").getAsString();
-
-                        //System.out.println(obj.get("Description").getAsString());
-                        //System.out.println(supplier);
-
-                        list.add(new Item(title,barcode,itemNumber,itemId,stock,sellPrice,buyPrice,supplier));
-
-                    });
-
-                    sch.cancel();
-
-                    /*
-                    //Sync Request
-                    Thread syncReq = new SyncRequest(list);
-                    //syncReq.setDaemon(true);
-                    syncReq.start();
-                    */
-
-                    ExecutorService executor = Executors.newFixedThreadPool(3);
-                    executor.submit(new SyncRequest(list,executor));
-                }
-            });
-            sch.start();
+            ReadSettings settings = new ReadSettings();
+            //settings.ReadSettings();
+            String mode = settings.getMode();
+            if (mode.equals("Auto") && ! MainController.onProcess) {
+                MainController.onProcess = true;
+                ScheduleddReq sch = new ScheduleddReq();
+                sch.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+                    @Override
+                    public void handle(WorkerStateEvent t) {
+                        ArrayList<Item> list = (ArrayList) t.getSource().getValue();
+                        ExecutorService executor = Executors.newFixedThreadPool(3);
+                        executor.submit(new SyncRequest(list, executor));
+                        sch.cancel();
+                    }
+                });
+                sch.start();
+            }else {
+                System.out.println("onProcess or Manuel mode");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

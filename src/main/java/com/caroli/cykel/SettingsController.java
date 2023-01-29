@@ -37,14 +37,14 @@ public class SettingsController {
 
     @FXML
     public void initialize() throws FileNotFoundException {
-        MainController.settings.ReadSettings();
+        //MainController.settings.ReadSettings();
         //ReadSettings settings = new ReadSettings();
         //settings.ReadSettings();
         try {
             warehousename.setText(MainController.settings.getWareHouseName());
             storekey.setText(MainController.settings.getStoreKey());
             reqUrl.setText(MainController.settings.getRequestUrl());
-            requestLimit.setText(MainController.settings.getRequestLimit());
+            requestLimit.setText(MainController.settings.getRequestLimit().toString());
             serverReqUrl.setText(MainController.settings.getServerRequestUrl());
             String mode = MainController.settings.getMode();
             if (mode.equals("Manuel")) {
@@ -118,7 +118,7 @@ public class SettingsController {
             String wareHouseName = warehousename.getText();
             String storeKey = storekey.getText();
             String requestUrl = reqUrl.getText();
-            String requestLim = requestLimit.getText();
+            Integer requestLim = Integer.parseInt(requestLimit.getText());
             String serverRequestUrl = serverReqUrl.getText();
             Integer syncTimePeriod = Integer.parseInt((String) timePeriod.getValue());
             //Settings

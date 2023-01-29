@@ -1,8 +1,6 @@
 package com.caroli.cykel;
 
-import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -22,6 +20,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class MainController {
     @FXML
@@ -32,7 +33,6 @@ public class MainController {
     private MenuItem closeButtonMenu;
     @FXML
     MenuBar myMenuBar;
-
     @FXML
     Label modeStatus;
     @FXML
@@ -42,10 +42,12 @@ public class MainController {
 
     private Stage stageSettings;
     public static ReadSettings settings;
+    public static boolean onProcess = false;
+
     @FXML
     public void initialize() throws FileNotFoundException {
         settings = new ReadSettings();
-        settings.ReadSettings();
+        //settings.ReadSettings();
         wareHouseStatus.setText(settings.getWareHouseName());
         String mode = settings.getMode();
         modeStatus.setText(mode);
@@ -54,27 +56,28 @@ public class MainController {
 
     @FXML
     protected void onPushButtonClick() throws IOException {
-
-        /*
-            Request request = new Request();
-            JsonArray response = request.req();
-            response.forEach((it) -> {
-                JsonObject item = (JsonObject) it;
-                JsonObject department = (JsonObject) item.get("Department");
-                //System.out.println(department.get("Description"));
-                //System.out.println(item.get("Description").getAsString());
-            });
-
-         */
-
+        if( !onProcess ) {
+            onProcess = true;
+            ApiRequest request = new ApiRequest();
+            ArrayList<Item> items = request.apiReq();
+            ExecutorService executor = Executors.newFixedThreadPool(3);
+            executor.submit(new SyncRequest(items, executor));
+        } else {
+            Text text_1 = new Text("Last sync process still in queue\n");
+            text_1.setFill(Color.RED);
+            text_1.setFont(Font.font("Verdana", 15));
+            logBox.getChildren().add(text_1);
+        }
     }
+
     @FXML
-    private void closeButtonAction(){
+    private void closeButtonAction() {
         // get a handle to the stage
         Stage stage = (Stage) myMenuBar.getScene().getWindow();
         // do what you have to do
         stage.close();
     }
+
     @FXML
     private void aboutButtonAction(ActionEvent event) {
         try {
@@ -87,7 +90,7 @@ public class MainController {
             stage.setScene(new Scene(root1));
             stage.setResizable(false);
             stage.show();
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -96,7 +99,7 @@ public class MainController {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("settings-view.fxml"));
             Parent root1 = (Parent) fxmlLoader.load();
-            if( stageSettings == null) {
+            if (stageSettings == null) {
                 stageSettings = new Stage();
                 stageSettings.setTitle("Settings");
                 Image image = new Image(CaroliKassaApp.class.getResourceAsStream("icons/ic_launcher-web.png"));
@@ -112,16 +115,17 @@ public class MainController {
             */
 
                 stageSettings.show();
-            } else if(stageSettings.isShowing()) {
+            } else if (stageSettings.isShowing()) {
                 stageSettings.toFront();
             } else {
                 stageSettings.show();
             }
 
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     public void saveLogButtonAction(ActionEvent actionEvent) {
         // Creating an instance of file
         Path path = Paths.get("log.txt");
@@ -130,8 +134,7 @@ public class MainController {
         try {
             Files.writeString(path, str, StandardOpenOption.APPEND);
             logBox.getChildren().clear();
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
             System.out.print("Invalid Path");
             Text text_1 = new Text("Invalid Path\n");
             text_1.setFill(Color.RED);
@@ -139,6 +142,7 @@ public class MainController {
             logBox.getChildren().add(text_1);
         }
     }
+
     public static String getStringFromTextFlow(TextFlow tf) {
         StringBuilder sb = new StringBuilder();
         tf.getChildren().stream()

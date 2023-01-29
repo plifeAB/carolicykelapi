@@ -1,17 +1,19 @@
 package com.caroli.cykel;
-import com.google.gson.JsonArray;
+
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 
-public class ScheduleddReq extends Service<JsonArray> {
+import java.util.ArrayList;
 
-    protected Task<JsonArray> createTask() {
+public class ScheduleddReq extends Service<ArrayList> {
 
-        return new Task<JsonArray>() {
+    protected Task<ArrayList> createTask() {
+
+        return new Task<ArrayList>() {
             @Override
-            protected JsonArray call() throws Exception {
-                Request request = new Request();
-                JsonArray response = request.req();
+            protected ArrayList<Item> call() throws Exception {
+                ApiRequest request = new ApiRequest();
+                ArrayList<Item> response = request.apiReq();
                 return response;
             }
         };

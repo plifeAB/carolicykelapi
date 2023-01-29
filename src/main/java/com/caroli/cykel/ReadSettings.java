@@ -3,78 +3,70 @@ package com.caroli.cykel;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import javafx.fxml.FXML;
-import javafx.scene.text.TextFlow;
+import javafx.fxml.Initializable;
+
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 public class ReadSettings  {
-    @FXML
-    public  TextFlow logBox;
-    public  String wareHouseName;
-    public  String storeKey;
-    public  String requestUrl;
-    public  String mode;
-    public  String requestLimit;
-    public  String serverRequestUrl;
-    public  Integer syncTimePeriod;
+    public String wareHouseName;
+    public String storeKey;
+    public String requestUrl;
+    public String mode;
+    public Integer requestLimit;
+    public String serverRequestUrl;
+    public Integer syncTimePeriod;
 
-
-    public  void ReadSettings()   throws FileNotFoundException {
+    public  ReadSettings() throws FileNotFoundException {
         try {
-            /*
-            ArrayList<Item> list = new ArrayList<Item>();
-            list.add(new Item("test 3 ","test desc 3 ",3));
-            list.add(new Item("test 4 ","test desc 4",4));
-            list.add(new Item("test 5 ","test desc 5",5));
-            list.forEach((n) -> {
-                System.out.println(n.getDescription());
-            });
-
-             */
 
             JsonParser parser = new JsonParser();
             JsonArray jsonArray = (JsonArray) parser.parse(new FileReader("settings.json"));
             for (int i = 0; i < jsonArray.size(); i++) {
                 JsonObject item = (JsonObject) jsonArray.get(i);
-                JsonObject emp = (JsonObject) item.get("settings");
-                wareHouseName=emp.get("wareHouseName").getAsString();
-                storeKey=emp.get("storeKey").getAsString();
-                requestUrl = emp.get("requestUrl").getAsString();
-                mode = emp.get("mode").getAsString();
-                requestLimit = emp.get("requestLimit").getAsString();
-                serverRequestUrl = emp.get("serverRequestUrl").getAsString();
-                syncTimePeriod = emp.get("syncTimePeriod").getAsInt();
+                JsonObject set = (JsonObject) item.get("settings");
+                wareHouseName = set.get("wareHouseName").getAsString();
+                storeKey = set.get("storeKey").getAsString();
+                requestUrl = set.get("requestUrl").getAsString();
+                mode = set.get("mode").getAsString();
+                requestLimit = set.get("requestLimit").getAsInt();
+                serverRequestUrl = set.get("serverRequestUrl").getAsString();
+                syncTimePeriod = set.get("syncTimePeriod").getAsInt();
 
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             System.out.println(e.toString());
         }
 
     }
 
-    public String getWareHouseName()
-    {
+    public String getWareHouseName() {
         return wareHouseName;
     }
+
     public String getStoreKey() {
         return storeKey;
     }
-    public String getRequestUrl()
-    {
+
+    public String getRequestUrl() {
         return requestUrl;
     }
+
     public String getMode() {
         return mode;
     }
-    public String getRequestLimit() {
+
+    public Integer getRequestLimit() {
         return requestLimit;
     }
+
     public String getServerRequestUrl() {
         return serverRequestUrl;
     }
-    public Integer getSyncTimePeriod() {
-        return  syncTimePeriod;
-    }
 
+    public Integer getSyncTimePeriod() {
+        return syncTimePeriod;
+    }
 }
