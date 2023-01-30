@@ -103,7 +103,7 @@
                            <children>
                               <Label text="Item Size" />
                               <Label text="Next Request" GridPane.rowIndex="1" />
-                              <Label text="Limit" GridPane.rowIndex="2" />
+                              <Label text="Request Limit" GridPane.rowIndex="2" />
                               <Label fx:id="itemSizeLab" text="Label" GridPane.columnIndex="1">
                                  <font>
                                     <Font name="System Bold" size="12.0" />

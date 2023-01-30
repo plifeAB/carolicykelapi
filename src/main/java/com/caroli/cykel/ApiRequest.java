@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class ApiRequest {
+public  class ApiRequest {
     public ArrayList<Item> apiReq() throws IOException {
 
         CloseableHttpClient httpClient = HttpClients.createDefault();
@@ -82,7 +82,7 @@ public class ApiRequest {
         return null;
     }
 
-    public void syncReq(ArrayList<Item> items) {
+    public  void syncReq(ArrayList<Item> items) {
         try {
             ReadSettings settings = new ReadSettings();
             Integer requestLimit = settings.requestLimit;
@@ -91,7 +91,7 @@ public class ApiRequest {
             int dividend = items.size() / settings.requestLimit;
             int left = items.size() % settings.requestLimit;
 
-            System.out.println(items.size());
+            //System.out.println(items.size());
 
             int count = 0;
             for (int i = 0; i < dividend; i++) {
@@ -131,7 +131,7 @@ public class ApiRequest {
 
     }
 
-    public JSONArray buildJson(List<Item> items) {
+    public  JSONArray buildJson(List<Item> items) {
         JSONArray allItems = new JSONArray();
         items.forEach(it -> {
             JSONObject item = new JSONObject();
@@ -150,7 +150,7 @@ public class ApiRequest {
         return allItems;
     }
 
-    private boolean makeSyncRequest(JSONArray items) {
+    private  boolean makeSyncRequest(JSONArray items) {
         System.out.println(items);
         return false;
     }

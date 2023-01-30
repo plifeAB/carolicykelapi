@@ -1,8 +1,7 @@
 package com.caroli.cykel;
 
 import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.event.EventHandler;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -47,6 +46,13 @@ public class MainController {
     @FXML
     Label lastRequestStatus;
 
+    @FXML
+    Label itemSizeLab;
+    @FXML
+    Label nextReqLab;
+    @FXML
+    Label limitLab;
+
     private Stage stageSettings;
     public static ReadSettings settings;
     public static boolean onProcess = false;
@@ -54,17 +60,33 @@ public class MainController {
     public static TextFlow log_box;
     public static Label lastRequestStatusLabel;
     public static ScrollPane scrollLogBoxPane;
+    public static Label itemSizeLabel;
+    public static Label nextReqLabel;
+    public static Label limitLabel;
+    public static Label modeStatusLabel;
+    public static Label wareHouseStatusLabel;
+
     @FXML
     public void initialize() throws FileNotFoundException {
         settings = new ReadSettings();
         //settings.ReadSettings();
         wareHouseStatus.setText(settings.getWareHouseName());
+        wareHouseStatusLabel = wareHouseStatus;
         String mode = settings.getMode();
         modeStatus.setText(mode);
+        modeStatusLabel = modeStatus;
+        itemSizeLabel = itemSizeLab;
+        nextReqLabel = nextReqLab;
+        limitLabel = limitLab;
         log_box = logBox;
         lastRequestStatusLabel = lastRequestStatus;
         scrollLogBoxPane = scrollLogBox;
 
+        lastRequestStatusLabel.setText("Waiting");
+        itemSizeLab.setText("Waiting");
+        nextReqLabel.setText("Waiting");
+
+        limitLabel.setText(settings.getRequestLimit().toString());
 
     }
 
@@ -77,6 +99,7 @@ public class MainController {
                 ArrayList<Item> items = request.apiReq();
                 ExecutorService executor = Executors.newFixedThreadPool(3);
                 executor.submit(new SyncRequest(items, executor));
+                itemSizeLabel.setText(String.valueOf(items.size()));
                 update_time();
             } else {
                 Text text_1 = new Text("Last sync process still in queue\n");
@@ -187,7 +210,6 @@ public class MainController {
         Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd yyyy HH:mm:ss", Locale.getDefault());
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
-
         String timeString = timeFormat.format(date);
         String dateString = dateFormat.format(date);
         lastRequestStatusLabel.setText(timeString);
@@ -199,7 +221,9 @@ public class MainController {
         time_text.setFill(Color.BLUE);
         time_text.setFont(Font.font("Verdana", 12));
         log_box.getChildren().add(time_text);
-        scrollLogBoxPane.setVvalue(5D);
+
+
+        scrollLogBoxPane.setVvalue(Double.MAX_VALUE);
 
     }
     public static void update_log_box(String txt, Color cl) {

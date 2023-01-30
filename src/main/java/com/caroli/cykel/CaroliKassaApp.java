@@ -56,7 +56,7 @@ public class CaroliKassaApp extends Application {
             if (mode.equals("Auto") && ! MainController.onProcess) {
                 MainController.onProcess = true;
                 try {
-                    ScheduleddReq sch = new ScheduleddReq();
+                    ScheduledReq sch = new ScheduledReq();
                     sch.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
                         @Override
                         public void handle(WorkerStateEvent t) {
@@ -65,6 +65,7 @@ public class CaroliKassaApp extends Application {
                             executor.submit(new SyncRequest(list, executor));
                             MainController.update_time();
                             sch.cancel();
+                            MainController.itemSizeLabel.setText(String.valueOf(list.size()));
                         }
                     });
                     sch.start();
