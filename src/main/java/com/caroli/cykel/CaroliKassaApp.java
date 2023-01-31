@@ -2,16 +2,21 @@ package com.caroli.cykel;
 
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.concurrent.WorkerStateEvent;
 
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -41,9 +46,12 @@ public class CaroliKassaApp extends Application {
         Runnable task = () -> {
             scheduledRequest();
         };
+
         //ScheduledExecutorService executorService = Executors.newScheduledThreadPool(2);
         executorService = Executors.newScheduledThreadPool(2);
+
         executorService.scheduleAtFixedRate(task, 30, 30, TimeUnit.SECONDS);
+
         launch();
 
     }
@@ -55,6 +63,15 @@ public class CaroliKassaApp extends Application {
             String mode = settings.getMode();
             if (mode.equals("Auto") && ! MainController.onProcess) {
                 MainController.onProcess = true;
+                /*
+                Date date = new Date();
+                SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+                long HOUR = 3600*1000; // in milli-seconds.
+                Date newDate = new Date(date.getTime() + settings.getSyncTimePeriod() * HOUR);
+                String timeString = timeFormat.format(newDate);
+                MainController.nextReqLabel.setText(timeString);
+
+                 */
                 try {
                     ScheduledReq sch = new ScheduledReq();
                     sch.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
