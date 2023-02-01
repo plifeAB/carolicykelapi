@@ -11,8 +11,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.ContentType;
-import org.apache.http.entity.StringEntity;
+
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
@@ -25,7 +24,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.atomic.AtomicReference;
 
 public  class ApiRequest {
     public ArrayList<Item> apiReq() throws IOException {
@@ -34,13 +32,7 @@ public  class ApiRequest {
 
         try {
             ReadSettings settings = new ReadSettings();
-            //settings.ReadSettings();
             HttpGet request = new HttpGet(settings.getRequestUrl());
-
-            // add request headers
-            // request.addHeader("custom-k
-            // ey", "mkyong");
-            // request.addHeader(HttpHeaders.USER_AGENT, "Googlebot");
 
             CloseableHttpResponse response = httpClient.execute(request);
 
@@ -122,22 +114,6 @@ public  class ApiRequest {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-
-                /*
-                AtomicReference<Integer> xx = new AtomicReference<>(0);
-                json.forEach(json_item -> {
-                    try {
-                        xx.set(xx.get() +1);
-                        System.out.println(xx.get().toString());
-                        makeSyncRequest((JSONObject) json_item);
-                        Thread.sleep(100);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                });
-
-                 */
-                //System.out.println(buildJson(n));
             });
             //JSONArray json = new JSONArray("[{}]");
             //makeSyncRequest(json);
