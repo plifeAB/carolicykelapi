@@ -11,6 +11,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -115,7 +116,7 @@ public  class ApiRequest {
                 JSONArray json = buildJson(n);
                 try {
                     makeSyncRequest(json);
-                    Thread.sleep(2000);
+                    Thread.sleep(MainController.settings.getSleepPeriod());
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (InterruptedException e) {
@@ -168,31 +169,31 @@ public  class ApiRequest {
     }
 
     private  boolean makeSyncRequest(JSONArray items) throws IOException {
-        CloseableHttpClient httpClient = HttpClients.createDefault();
 
+        CloseableHttpClient httpClient = HttpClients.createDefault();
         try {
             ReadSettings settings = new ReadSettings();;
             HttpPost post = new HttpPost(settings.getServerRequestUrl());
 
+            post.addHeader("content-type", "application/x-www-form-urlencoded");
             post.addHeader("store-name", settings.getWareHouseName().toLowerCase(Locale.ROOT));
             post.addHeader("store-key", settings.getStoreKey());
             post.addHeader(HttpHeaders.USER_AGENT, "plife-api-request-engine");
-            
+
             List<NameValuePair> urlParameters = new ArrayList<>();
             urlParameters.add(new BasicNameValuePair("action", settings.getRequestAction()));
             urlParameters.add(new BasicNameValuePair("items", items.toString()));
-            post.setEntity(new UrlEncodedFormEntity(urlParameters));
+            post.setEntity(new UrlEncodedFormEntity(urlParameters,"UTF-8"));
 
             CloseableHttpResponse response = httpClient.execute(post);
 
             // Get HttpResponse Status
-            System.out.println(response.getProtocolVersion());              // HTTP/1.1
-            System.out.println(response.getStatusLine().getStatusCode());   // 200
-            System.out.println(response.getStatusLine().getReasonPhrase()); // OK
-            System.out.println(response.getStatusLine().toString());        // HTTP/1.1 200 OK
+           // System.out.println(response.getProtocolVersion());              // HTTP/1.1
+           // System.out.println(response.getStatusLine().getStatusCode());   // 200
+           // System.out.println(response.getStatusLine().getReasonPhrase()); // OK
+           // System.out.println(response.getStatusLine().toString());        // HTTP/1.1 200 OK
 
             try {
-
                 HttpEntity res_entity = response.getEntity();
                 if (res_entity != null) {
                     String result = EntityUtils.toString(res_entity);
