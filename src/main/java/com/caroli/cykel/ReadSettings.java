@@ -18,7 +18,8 @@ public class ReadSettings  {
     public Integer requestLimit;
     public String serverRequestUrl;
     public Integer syncTimePeriod;
-
+    public String requestAction;
+    public Long sleepPeriod;
     public  ReadSettings() throws FileNotFoundException {
         try {
 
@@ -34,6 +35,8 @@ public class ReadSettings  {
                 requestLimit = set.get("requestLimit").getAsInt();
                 serverRequestUrl = set.get("serverRequestUrl").getAsString();
                 syncTimePeriod = set.get("syncTimePeriod").getAsInt();
+                requestAction = set.get("requestAction").getAsString();
+                sleepPeriod = set.get("sleepPeriod").getAsLong();
 
             }
         } catch (Exception e) {
@@ -68,5 +71,13 @@ public class ReadSettings  {
 
     public Integer getSyncTimePeriod() {
         return syncTimePeriod;
+    }
+
+    public String getRequestAction() {
+        return requestAction;
+    }
+
+    public Long getSleepPeriod() {
+        return sleepPeriod;
     }
 }

@@ -4,10 +4,17 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpHeaders;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -16,6 +23,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.atomic.AtomicReference;
 
 public  class ApiRequest {
@@ -82,7 +90,7 @@ public  class ApiRequest {
         return null;
     }
 
-    public  void syncReq(ArrayList<Item> items) {
+    public  void syncReq(ArrayList<Item> items) throws IOException  {
         try {
             ReadSettings settings = new ReadSettings();
             Integer requestLimit = settings.requestLimit;
@@ -105,7 +113,14 @@ public  class ApiRequest {
 
             it.forEach(n -> {
                 JSONArray json = buildJson(n);
-                makeSyncRequest(json);
+                try {
+                    makeSyncRequest(json);
+                    Thread.sleep(2000);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
                 /*
                 AtomicReference<Integer> xx = new AtomicReference<>(0);
@@ -123,6 +138,8 @@ public  class ApiRequest {
                  */
                 //System.out.println(buildJson(n));
             });
+            //JSONArray json = new JSONArray("[{}]");
+            //makeSyncRequest(json);
             MainController.onProcess = false;
         } catch (FileNotFoundException e) {
             System.out.println("could not read settings");
@@ -150,9 +167,50 @@ public  class ApiRequest {
         return allItems;
     }
 
-    private  boolean makeSyncRequest(JSONArray items) {
-        System.out.println(items);
+    private  boolean makeSyncRequest(JSONArray items) throws IOException {
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+
+        try {
+            ReadSettings settings = new ReadSettings();;
+            HttpPost post = new HttpPost(settings.getServerRequestUrl());
+
+            post.addHeader("store-name", settings.getWareHouseName().toLowerCase(Locale.ROOT));
+            post.addHeader("store-key", settings.getStoreKey());
+            post.addHeader(HttpHeaders.USER_AGENT, "plife-api-request-engine");
+            
+            List<NameValuePair> urlParameters = new ArrayList<>();
+            urlParameters.add(new BasicNameValuePair("action", settings.getRequestAction()));
+            urlParameters.add(new BasicNameValuePair("items", items.toString()));
+            post.setEntity(new UrlEncodedFormEntity(urlParameters));
+
+            CloseableHttpResponse response = httpClient.execute(post);
+
+            // Get HttpResponse Status
+            System.out.println(response.getProtocolVersion());              // HTTP/1.1
+            System.out.println(response.getStatusLine().getStatusCode());   // 200
+            System.out.println(response.getStatusLine().getReasonPhrase()); // OK
+            System.out.println(response.getStatusLine().toString());        // HTTP/1.1 200 OK
+
+            try {
+
+                HttpEntity res_entity = response.getEntity();
+                if (res_entity != null) {
+                    String result = EntityUtils.toString(res_entity);
+                    System.out.println(result);
+                }
+            } finally {
+                response.close();
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            httpClient.close();
+        }
+        httpClient.close();
         return false;
     }
-
 }

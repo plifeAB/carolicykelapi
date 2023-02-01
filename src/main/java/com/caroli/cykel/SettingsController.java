@@ -37,6 +37,10 @@ public class SettingsController {
     ComboBox timePeriod;
     @FXML
     TextField serverReqUrl;
+    @FXML
+    TextField requestAction;
+    @FXML
+    TextField sleepPeriod;
 
     @FXML
     public void initialize() throws FileNotFoundException {
@@ -56,6 +60,8 @@ public class SettingsController {
                 radioAuto.setSelected(true);
             }
             timePeriod.getSelectionModel().select(MainController.settings.getSyncTimePeriod().toString());
+            requestAction.setText(MainController.settings.getRequestAction());
+            sleepPeriod.setText(MainController.settings.getSleepPeriod().toString());
         } catch (NullPointerException e ) {
             return;
         } catch (Exception e ) {
@@ -75,6 +81,8 @@ public class SettingsController {
             Integer requestLim = Integer.parseInt(requestLimit.getText());
             String serverRequestUrl = serverReqUrl.getText();
             Integer syncTimePeriod = Integer.parseInt((String) timePeriod.getValue());
+            String reqAction = requestAction.getText();
+            Long sleepTimePeriod = Long.parseLong(sleepPeriod.getText());
             //Settings
             JSONObject settingDetails = new JSONObject();
             settingDetails.put("wareHouseName", wareHouseName);
@@ -84,6 +92,9 @@ public class SettingsController {
             settingDetails.put("requestLimit",requestLim);
             settingDetails.put("serverRequestUrl",serverRequestUrl);
             settingDetails.put("syncTimePeriod",syncTimePeriod);
+            settingDetails.put("requestAction",reqAction);
+            settingDetails.put("sleepPeriod",sleepTimePeriod);
+
             JSONObject settingObject = new JSONObject();
             settingObject.put("settings", settingDetails);
 

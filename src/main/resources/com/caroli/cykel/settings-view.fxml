@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="304.0" prefWidth="422.0" stylesheets="@css/Settings.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.caroli.cykel.SettingsController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="362.0" prefWidth="422.0" stylesheets="@css/Settings.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.caroli.cykel.SettingsController">
    <bottom>
       <AnchorPane prefHeight="41.0" prefWidth="422.0" BorderPane.alignment="CENTER">
          <children>
@@ -59,6 +59,8 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -109,6 +111,10 @@
                         </Label>
                      </children>
                   </HBox>
+                  <Label text="Request Action" GridPane.rowIndex="7" />
+                  <TextField fx:id="requestAction" maxWidth="240.0" prefWidth="240.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                  <TextField fx:id="sleepPeriod" maxWidth="240.0" prefWidth="240.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                  <Label text="Sleep Period" GridPane.rowIndex="8" />
                </children>
                <opaqueInsets>
                   <Insets />

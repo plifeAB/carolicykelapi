@@ -12,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -41,17 +42,35 @@ public class CaroliKassaApp extends Application {
         });
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args)  {
 
         Runnable task = () -> {
             scheduledRequest();
+            Platform.runLater(() -> {
+                //MainController.nextReqLabel.setText("test");
+                ReadSettings settings = null;
+                try {
+                    settings = new ReadSettings();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                String mode = settings.getMode();
+                if(mode.equals("Auto")) {
+                    Date date = new Date();
+                    SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+                    long HOUR = 3600 * 1000; // in milli-seconds.
+                    Date newDate = new Date(date.getTime() + settings.getSyncTimePeriod() * HOUR);
+                    String timeString = timeFormat.format(newDate);
+                    MainController.nextReqLabel.setText(timeString);
+                } else {
+                    MainController.nextReqLabel.setText("-");
+                }
+            });
         };
 
         //ScheduledExecutorService executorService = Executors.newScheduledThreadPool(2);
         executorService = Executors.newScheduledThreadPool(2);
-
         executorService.scheduleAtFixedRate(task, 30, 30, TimeUnit.SECONDS);
-
         launch();
 
     }
@@ -63,15 +82,6 @@ public class CaroliKassaApp extends Application {
             String mode = settings.getMode();
             if (mode.equals("Auto") && ! MainController.onProcess) {
                 MainController.onProcess = true;
-                /*
-                Date date = new Date();
-                SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
-                long HOUR = 3600*1000; // in milli-seconds.
-                Date newDate = new Date(date.getTime() + settings.getSyncTimePeriod() * HOUR);
-                String timeString = timeFormat.format(newDate);
-                MainController.nextReqLabel.setText(timeString);
-
-                 */
                 try {
                     ScheduledReq sch = new ScheduledReq();
                     sch.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
