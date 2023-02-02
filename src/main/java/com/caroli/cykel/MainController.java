@@ -216,11 +216,11 @@ public class MainController {
         Text text_1 = new Text("Request Process begin at\n");
         text_1.setFill(Color.BLACK);
         text_1.setFont(Font.font("Verdana", 14));
-        log_box.getChildren().add(text_1);
+        //log_box.getChildren().add(text_1);
         Text time_text= new Text(dateString + "\n");
         time_text.setFill(Color.BLUE);
         time_text.setFont(Font.font("Verdana", 12));
-        log_box.getChildren().add(time_text);
+        log_box.getChildren().addAll(text_1,time_text);
 
 
         scrollLogBoxPane.setVvalue(Double.MAX_VALUE);
