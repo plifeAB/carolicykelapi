@@ -2,6 +2,7 @@ package com.caroli.cykel;
 
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
+import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 

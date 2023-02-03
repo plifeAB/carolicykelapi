@@ -56,6 +56,7 @@ public class MainController {
     private Stage stageSettings;
     public static ReadSettings settings;
     public static boolean onProcess = false;
+    public static boolean scheduledError =false;
 
     public static TextFlow log_box;
     public static Label lastRequestStatusLabel;
@@ -231,5 +232,6 @@ public class MainController {
         text_1.setFill(cl);
         text_1.setFont(Font.font("Verdana", 14));
         log_box.getChildren().add(text_1);
+        System.out.println("here");
     }
 }

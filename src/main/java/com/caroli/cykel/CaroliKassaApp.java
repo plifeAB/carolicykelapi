@@ -10,6 +10,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.FileNotFoundException;
@@ -62,6 +65,7 @@ public class CaroliKassaApp extends Application {
                     Date newDate = new Date(date.getTime() + settings.getSyncTimePeriod() * HOUR);
                     String timeString = timeFormat.format(newDate);
                     MainController.nextReqLabel.setText(timeString);
+                    //MainController.update_log_box("test", Color.RED);
                 } else {
                     MainController.nextReqLabel.setText("-");
                 }
@@ -70,7 +74,7 @@ public class CaroliKassaApp extends Application {
 
         //ScheduledExecutorService executorService = Executors.newScheduledThreadPool(2);
         executorService = Executors.newScheduledThreadPool(2);
-        executorService.scheduleAtFixedRate(task, 30, 30, TimeUnit.SECONDS);
+        executorService.scheduleAtFixedRate(task, 10, 10, TimeUnit.SECONDS);
         launch();
 
     }
