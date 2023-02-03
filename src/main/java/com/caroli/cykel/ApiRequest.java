@@ -106,14 +106,19 @@ public  class ApiRequest {
 
             it.forEach(n -> {
                 JSONArray json = buildJson(n);
+
                 try {
                     makeSyncRequest(json);
+
                     Thread.sleep(MainController.settings.getSleepPeriod());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
+                }
+                catch (IOException e) {
                     e.printStackTrace();
                 }
+                catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
             });
             //JSONArray json = new JSONArray("[{}]");
             //makeSyncRequest(json);

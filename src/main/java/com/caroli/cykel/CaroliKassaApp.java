@@ -71,11 +71,16 @@ public class CaroliKassaApp extends Application {
                 }
             });
         };
-
-        //ScheduledExecutorService executorService = Executors.newScheduledThreadPool(2);
-        executorService = Executors.newScheduledThreadPool(2);
-        executorService.scheduleAtFixedRate(task, 10, 10, TimeUnit.SECONDS);
-        launch();
+        ReadSettings settings = null;
+        try {
+            settings = new ReadSettings();
+            //ScheduledExecutorService executorService = Executors.newScheduledThreadPool(2);
+            executorService = Executors.newScheduledThreadPool(2);
+            executorService.scheduleAtFixedRate(task, settings.getSyncTimePeriod(), settings.getSyncTimePeriod(), TimeUnit.HOURS);
+            launch();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
