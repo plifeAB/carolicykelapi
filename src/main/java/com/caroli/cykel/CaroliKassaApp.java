@@ -14,6 +14,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import org.apache.http.conn.HttpHostConnectException;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -76,7 +77,8 @@ public class CaroliKassaApp extends Application {
             settings = new ReadSettings();
             //ScheduledExecutorService executorService = Executors.newScheduledThreadPool(2);
             executorService = Executors.newScheduledThreadPool(2);
-            executorService.scheduleAtFixedRate(task, settings.getSyncTimePeriod(), settings.getSyncTimePeriod(), TimeUnit.HOURS);
+            //executorService.scheduleAtFixedRate(task, settings.getSyncTimePeriod(), settings.getSyncTimePeriod(), TimeUnit.HOURS);
+            executorService.scheduleAtFixedRate(task, 10, 10, TimeUnit.SECONDS);
             launch();
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
@@ -93,17 +95,28 @@ public class CaroliKassaApp extends Application {
                 MainController.onProcess = true;
                 try {
                     ScheduledReq sch = new ScheduledReq();
+
                     sch.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
                         @Override
                         public void handle(WorkerStateEvent t) {
-                            ArrayList<Item> list = (ArrayList) t.getSource().getValue();
-                            ExecutorService executor = Executors.newFixedThreadPool(3);
-                            executor.submit(new SyncRequest(list, executor));
-                            MainController.update_time();
-                            sch.cancel();
-                            MainController.itemSizeLabel.setText(String.valueOf(list.size()));
+                            if(t.getSource().getValue() != null) {
+                                ArrayList<Item> list = (ArrayList) t.getSource().getValue();
+                                ExecutorService executor = Executors.newFixedThreadPool(3);
+                                executor.submit(new SyncRequest(list, executor));
+                                MainController.update_time();
+                                sch.cancel();
+                                MainController.itemSizeLabel.setText(String.valueOf(list.size()));
+                            }
                         }
                     });
+                    sch.setOnFailed(new EventHandler<WorkerStateEvent>() {
+                        @Override
+                        public void handle(WorkerStateEvent t) {
+                            MainController.onProcess = false;
+                            sch.cancel();
+                        }
+                    });
+
                     sch.start();
                 } catch (Exception e) {
                     MainController.onProcess = false;

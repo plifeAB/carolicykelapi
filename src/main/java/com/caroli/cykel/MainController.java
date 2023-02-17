@@ -33,7 +33,7 @@ import java.util.concurrent.Executors;
 
 public class MainController {
     @FXML
-    private TextFlow logBox;
+    public  TextFlow logBox;
     @FXML
     private ScrollPane scrollLogBox;
     @FXML
@@ -89,6 +89,7 @@ public class MainController {
         nextReqLabel.setText("Waiting");
 
         limitLabel.setText(settings.getRequestLimit().toString());
+
 
     }
 
