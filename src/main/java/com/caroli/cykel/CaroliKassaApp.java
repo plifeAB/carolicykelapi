@@ -77,8 +77,8 @@ public class CaroliKassaApp extends Application {
             settings = new ReadSettings();
             //ScheduledExecutorService executorService = Executors.newScheduledThreadPool(2);
             executorService = Executors.newScheduledThreadPool(2);
-            //executorService.scheduleAtFixedRate(task, settings.getSyncTimePeriod(), settings.getSyncTimePeriod(), TimeUnit.HOURS);
-            executorService.scheduleAtFixedRate(task, 10, 10, TimeUnit.SECONDS);
+            executorService.scheduleAtFixedRate(task, settings.getSyncTimePeriod(), settings.getSyncTimePeriod(), TimeUnit.HOURS);
+            //executorService.scheduleAtFixedRate(task, 10, 10, TimeUnit.SECONDS);
             launch();
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
