@@ -44,6 +44,7 @@ public class CaroliKassaApp extends Application {
         stage.setOnCloseRequest(event -> {
             executorService.shutdown();
         });
+
     }
 
     public static void main(String[] args)  {
