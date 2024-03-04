@@ -62,12 +62,17 @@ public  class ApiRequest {
                         Float buyPrice = obj.get("BuyPrice").getAsFloat();
 
                         JsonObject sup = obj.get("Supplier").getAsJsonObject();
+
+                        String extra1 = obj.get("Extra1").getAsString(); // web item determinant based value j
                         String supplier = sup.get("Name").getAsString();
 
                         //System.out.println(obj.get("Description").getAsString());
                         //System.out.println(supplier);
-                        list.add(new Item(title, barcode, itemNumber, itemId, stock, sellPrice, buyPrice, supplier));
 
+                        // if Extra1 = "J" it is web item, prepare for next sync:
+                        if(extra1.toLowerCase().equals("j") ) {
+                            list.add(new Item(title, barcode, itemNumber, itemId, stock, sellPrice, buyPrice, supplier));
+                        }
                     });
                     return list;
 
